@@ -36,7 +36,6 @@ For this lab you will use the Iris Dataset that comes with scikit-learn. This is
 
 
 ```python
-# Run this cell without changes
 
 from sklearn import datasets
 import pandas as pd
@@ -47,11 +46,85 @@ df['target'] = iris.get('target')
 df.head()
 ```
 
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sepal length (cm)</th>
+      <th>sepal width (cm)</th>
+      <th>petal length (cm)</th>
+      <th>petal width (cm)</th>
+      <th>target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5.1</td>
+      <td>3.5</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>4.9</td>
+      <td>3.0</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>4.7</td>
+      <td>3.2</td>
+      <td>1.3</td>
+      <td>0.2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4.6</td>
+      <td>3.1</td>
+      <td>1.5</td>
+      <td>0.2</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>3.6</td>
+      <td>1.4</td>
+      <td>0.2</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
 Part of why we use this dataset for so many examples is that there is clear predictive power in each of the features (i.e. the distributions of feature values differ for each of the targets):
 
 
 ```python
-# Run this cell without changes
 
 import matplotlib.pyplot as plt
 
@@ -82,6 +155,12 @@ ax.legend()
 # Set a title for the overall plot
 fig.suptitle("Feature Distributions by Iris Type");
 ```
+
+
+    
+![png](index_files/index_5_0.png)
+    
+
 
 ### Requirements
 
@@ -115,24 +194,22 @@ Currently all of the data is contained in a dataframe called `df`, where the tar
 
 
 ```python
-# Replace None with appropriate code
 
 # Import the relevant function
-None
+from sklearn.model_selection import train_test_split
 
 # Separate X and y
-X = None
-y = None
+X = df.drop("target", axis=1)
+y = df["target"]
 
 # Perform train-test split with random_state=42
-X_train, X_test, y_train, y_test = None
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
 ```
 
 Make sure your data has the appropriate shape before moving forward:
 
 
 ```python
-# Run this cell without changes
 
 # Both train and test X should have 4 columns
 assert (X_train.shape[1] == 4) and (X_test.shape[1] == 4)
@@ -153,24 +230,135 @@ Use the `StandardScaler` class from scikit-learn ([documentation here](https://s
 
 
 ```python
-# Replace None with appropriate code
 
 from sklearn.preprocessing import StandardScaler
 
 # Instantiate a scaler
-scaler = None
+scaler = StandardScaler()
 
 # Fit the scaler on X_train
-None
+scaler.fit(X_train)
 
 # Transform X_train and X_test. Go ahead and reuse the variable names 
 # "X_train" and "X_test" since we won't need the un-scaled data
-None
-None
+X_train = scaler.transform(X_train)
+X_test = scaler.transform(X_test)
 
 # Now the values should be scaled
 pd.DataFrame(X_train, columns=iris.feature_names)
 ```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sepal length (cm)</th>
+      <th>sepal width (cm)</th>
+      <th>petal length (cm)</th>
+      <th>petal width (cm)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-1.018271</td>
+      <td>1.286460</td>
+      <td>-1.393389</td>
+      <td>-1.362177</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-0.773010</td>
+      <td>2.435452</td>
+      <td>-1.335503</td>
+      <td>-1.496476</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-0.037227</td>
+      <td>-0.781725</td>
+      <td>0.748378</td>
+      <td>0.920908</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.208034</td>
+      <td>0.826864</td>
+      <td>0.401064</td>
+      <td>0.518011</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.066448</td>
+      <td>0.137469</td>
+      <td>0.516836</td>
+      <td>0.383712</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>107</th>
+      <td>0.330664</td>
+      <td>-0.551926</td>
+      <td>0.111637</td>
+      <td>0.115114</td>
+    </tr>
+    <tr>
+      <th>108</th>
+      <td>-1.140902</td>
+      <td>-1.241321</td>
+      <td>0.401064</td>
+      <td>0.652310</td>
+    </tr>
+    <tr>
+      <th>109</th>
+      <td>-0.037227</td>
+      <td>2.205654</td>
+      <td>-1.509160</td>
+      <td>-1.362177</td>
+    </tr>
+    <tr>
+      <th>110</th>
+      <td>-0.037227</td>
+      <td>-1.011523</td>
+      <td>0.111637</td>
+      <td>-0.019186</td>
+    </tr>
+    <tr>
+      <th>111</th>
+      <td>1.556970</td>
+      <td>-0.092330</td>
+      <td>1.211463</td>
+      <td>1.189507</td>
+    </tr>
+  </tbody>
+</table>
+<p>112 rows × 4 columns</p>
+</div>
+
+
 
 ## 3. Evaluate Model Performance without PCA
 
@@ -178,30 +366,35 @@ In the cell below, instantiate a `LogisticRegression` model ([documentation here
 
 
 ```python
-# Replace None with appropriate code
 
 # Import the relevant class
-None
+from sklearn.linear_model import LogisticRegression
 
 # Instantiate the model with random_state=42
-baseline_model = None
+baseline_model = LogisticRegression(random_state=42)
 baseline_model
 ```
+
+
+
+
+    LogisticRegression(random_state=42)
+
+
 
 Now fit the model on the training data and score it on the test data (using the `.score` method).
 
 
 ```python
-# Replace None with appropriate code
 import time
 
 start = time.time()
 
 # Fit the model on the training data
-None
+baseline_model.fit(X_train, y_train)
 
 # Score the model on the test data
-baseline_model_score = None
+baseline_model_score = baseline_model.score(X_test, y_test)
 
 end = time.time()
 baseline_time_taken = end - start
@@ -210,11 +403,21 @@ print("Model score:", baseline_model_score)
 print("Time taken:", baseline_time_taken)
 ```
 
+    Model score: 1.0
+    Time taken: 0.04823613166809082
+
+
 
 ```python
-# Run this cell without changes
 baseline_model_score
 ```
+
+
+
+
+    1.0
+
+
 
 Ok, so it looks like we are getting essentially perfect performance with our baseline classifier, and it is taking aroud 8ms (timing will vary depending on your system).
 
@@ -230,28 +433,26 @@ We'll set `n_components` to `2`, meaning that we will only keep the first two pr
 
 
 ```python
-# Replace None with appropriate code
 
 # Import the relevant class
-None
+from sklearn.decomposition import PCA
 
 # Instantiate the PCA transformer with n_components=2
-pca = None
+pca = PCA(n_components=2)
 
 # Fit the transformer on X_train
-None
+pca.fit(X_train)
 
 # Transform X_train and X_test. This time, create new
 # variables for the transformed data
-X_train_pca = None
-X_test_pca = None
+X_train_pca = pca.transform(X_train)
+X_test_pca = pca.transform(X_test)
 ```
 
 Now, our PCA-transformed X values should have the same number of rows as before, but a different number of columns:
 
 
 ```python
-# Run this cell without changes
 
 # Same number of rows, different number of columns
 assert X_train_pca.shape[0] == X_train.shape[0]
@@ -264,6 +465,94 @@ assert X_train_pca.shape[1] == 2
 pd.DataFrame(X_train_pca, columns=["PC 1", "PC 2"])
 ```
 
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PC 1</th>
+      <th>PC 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-2.438563</td>
+      <td>-0.735586</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-2.634283</td>
+      <td>-1.886271</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.134202</td>
+      <td>0.685307</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.435677</td>
+      <td>-0.874250</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.044878</td>
+      <td>-0.545556</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>107</th>
+      <td>0.438965</td>
+      <td>0.383327</td>
+    </tr>
+    <tr>
+      <th>108</th>
+      <td>0.313593</td>
+      <td>1.536023</td>
+    </tr>
+    <tr>
+      <th>109</th>
+      <td>-2.218799</td>
+      <td>-1.949339</td>
+    </tr>
+    <tr>
+      <th>110</th>
+      <td>0.282925</td>
+      <td>0.952300</td>
+    </tr>
+    <tr>
+      <th>111</th>
+      <td>2.222796</td>
+      <td>-0.560819</td>
+    </tr>
+  </tbody>
+</table>
+<p>112 rows × 2 columns</p>
+</div>
+
+
+
 ### Visualizing Principal Components 
 
 Using the target data, we can visualize the principal components according to the class distribution. 
@@ -274,31 +563,128 @@ First, separate `X_train_pca` based on the associated target value in `y_train`.
 
 
 ```python
-# Run this cell without changes
 train_combined_pca = pd.DataFrame(X_train_pca, columns=["PC 1", "PC 2"])
 train_combined_pca["target"] = y_train.values
 train_combined_pca
 ```
 
 
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PC 1</th>
+      <th>PC 2</th>
+      <th>target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-2.438563</td>
+      <td>-0.735586</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-2.634283</td>
+      <td>-1.886271</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.134202</td>
+      <td>0.685307</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.435677</td>
+      <td>-0.874250</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1.044878</td>
+      <td>-0.545556</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>107</th>
+      <td>0.438965</td>
+      <td>0.383327</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>108</th>
+      <td>0.313593</td>
+      <td>1.536023</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>109</th>
+      <td>-2.218799</td>
+      <td>-1.949339</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>110</th>
+      <td>0.282925</td>
+      <td>0.952300</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>111</th>
+      <td>2.222796</td>
+      <td>-0.560819</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+<p>112 rows × 3 columns</p>
+</div>
+
+
+
+
 ```python
-# Replace None with appropriate code
 
 # Rows of train_combined_pca where target is 0
-setosa = None
+setosa = train_combined_pca[train_combined_pca["target"] == 0]
 
 # Rows of train_combined_pca where target is 1
-versicolor = None
+versicolor = train_combined_pca[train_combined_pca["target"] == 1]
 
 # Rows of train_combined_pca where target is 2
-virginica = None
+virginica = train_combined_pca[train_combined_pca["target"] == 2]
 ```
 
 The code below checks that the dataframes have the correct length:
 
 
 ```python
-# Run this cell without changes
 
 train_value_counts = y_train.value_counts()
 
@@ -317,20 +703,20 @@ Notes:
 
 
 ```python
-# Replace None with appropriate code
 
 # Set up figure and axes
+plt.style.use('seaborn-dark')
 fig, ax = plt.subplots(figsize=(10, 8))
 ax.grid()
 
 # Scatter plot of setosa (red)
-None
+ax.scatter(setosa["PC 1"], setosa["PC 2"], c="r")
 
 # Scatter plot of versicolor (green)
-None
+ax.scatter(versicolor["PC 1"], versicolor["PC 2"], c="g")
 
 # Scatter plot of virginica (blue)
-None
+ax.scatter(virginica["PC 1"], virginica["PC 2"], c="b")
 
 # Customize labels
 ax.set_xlabel('First Principal Component ', fontsize = 15)
@@ -338,6 +724,12 @@ ax.set_ylabel('Second Principal Component ', fontsize = 15)
 ax.set_title('Principal Component Analysis (2 PCs) for Iris Dataset', fontsize = 20)
 ax.legend(iris.target_names, fontsize="large");
 ```
+
+
+    
+![png](index_files/index_30_0.png)
+    
+
 
 ### Explained Variance
 
@@ -349,10 +741,9 @@ In the cell below, extract that information from `pca`:
 
 
 ```python
-# Replace None with appropriate code
 
 # Extract the explained variance ratio from the pca object
-evr_all_components = None
+evr_all_components = pca.explained_variance_ratio_
 
 pc1_evr = evr_all_components[0]
 pc2_evr = evr_all_components[1]
@@ -361,6 +752,12 @@ print(f"The second principal component explains {round(pc2_evr*100, 3)}% of the 
 print()
 print(f"Overall, the first two principal components explain {round(sum(evr_all_components*100), 3)}% of the variance")
 ```
+
+    The first principal component explains 71.582% of the variance
+    The second principal component explains 23.721% of the variance
+    
+    Overall, the first two principal components explain 95.303% of the variance
+
 
 As you can see, these first two principal components account for the vast majority of the overall variance in the dataset. This is indicative of the total information encapsulated in the compressed representation (2 dimensions) compared to the original encoding (4 dimensions).
 
@@ -372,25 +769,30 @@ In the cell below, we instantiate a new logistic regression model:
 
 
 ```python
-# Run this cell without changes
 
 pca_model = LogisticRegression(random_state=42)
 pca_model
 ```
 
+
+
+
+    LogisticRegression(random_state=42)
+
+
+
 Now, fit the model on `X_train_pca` instead of `X_train`, and evaluate it on `X_test_pca` instead of `X_test`.
 
 
 ```python
-# Replace None with appropriate code
 
 start = time.time()
 
 # Fit the model on the training data
-None
+pca_model.fit(X_train_pca, y_train)
 
 # Score the model on the test data
-pca_model_score = None
+pca_model_score = pca_model.score(X_test_pca, y_test)
 
 end = time.time()
 pca_time_taken = end - start
@@ -401,6 +803,13 @@ print()
 print("Time taken with PCA:", pca_time_taken)
 print("Baseline time taken:", baseline_time_taken)
 ```
+
+    Model score with PCA: 0.9210526315789473
+    Baseline model score: 1.0
+    
+    Time taken with PCA: 0.012470006942749023
+    Baseline time taken: 0.04823613166809082
+
 
 Although some accuracy is lost in this representation of the data, we were able to use half of the number of features to train the model! On average, this results in faster model fitting and predicting speeds.
 
@@ -414,7 +823,6 @@ One other useful aspect of applying PCA to reduce data to two dimensions is that
 
 
 ```python
-# Run this cell without changes
 import numpy as np
 
 # Combine all data into one df
@@ -452,6 +860,12 @@ ax.set_title('PCA-Transformed Iris Dataset with Decision Boundaries', fontsize =
 ax.legend(iris.target_names, fontsize=15);
 ```
 
+
+    
+![png](index_files/index_40_0.png)
+    
+
+
 ## BONUS: Manifold Dimensionality Reduction
 
 As mentioned previously, PCA is not the only technique for dimensionality reduction, although it is the only dimensionality reduction technique described in depth in our curriculum.
@@ -462,7 +876,6 @@ Here we'll have a quick demo of one type of manifold learning, isomap embedding 
 
 
 ```python
-# Run this cell without changes
 
 from sklearn.manifold import Isomap
 
@@ -492,13 +905,21 @@ print("Time taken with PCA:", pca_time_taken)
 print("Baseline time taken:", baseline_time_taken)
 ```
 
+    Model score with iso: 0.9473684210526315
+    Model score with PCA: 0.9210526315789473
+    Baseline model score: 1.0
+    
+    Time taken with iso: 0.01634979248046875
+    Time taken with PCA: 0.012470006942749023
+    Baseline time taken: 0.04823613166809082
+
+
 As you can see, preprocessing with isomap embedding gets us slightly better performance than preprocessing with PCA with this particular dataset + model, while still being faster than the baseline.
 
 This plot shows the components from the isomap embedding as well as the new decision boundaries:
 
 
 ```python
-# Run this cell without changes
 
 # Combine all data into one df
 X_all_iso = pd.concat([pd.DataFrame(X_train_iso), pd.DataFrame(X_test_iso)], axis=0)
@@ -534,6 +955,12 @@ ax.set_ylabel('Second Component ', fontsize = 15)
 ax.set_title('Isometric Embedded Iris Dataset with Decision Boundaries', fontsize = 20)
 ax.legend(iris.target_names, fontsize=15);
 ```
+
+
+    
+![png](index_files/index_44_0.png)
+    
+
 
 ## Summary 
 
